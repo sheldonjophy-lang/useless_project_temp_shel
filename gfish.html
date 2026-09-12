@@ -1,4 +1,1260 @@
-<html>
-      fvdfdfgsdff
-      
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goldie - AI Virtual Aquarium</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #03131d, #073b52);
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    margin: 20px;
+}
+
+/* AQUARIUM */
+
+#aquarium {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    height: 560px;
+    margin: auto;
+    overflow: hidden;
+
+    border: 10px solid #17465b;
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #5bd0f0,
+            #1688b0 55%,
+            #07516e
+        );
+
+    box-shadow: 0 20px 50px rgba(0,0,0,.6);
+}
+
+/* Water light */
+
+.water-light {
+    position: absolute;
+    inset: 0;
+
+    background:
+        repeating-linear-gradient(
+            105deg,
+            rgba(255,255,255,.12) 0px,
+            rgba(255,255,255,.12) 3px,
+            transparent 3px,
+            transparent 70px
+        );
+
+    animation: waterMove 7s linear infinite;
+}
+
+@keyframes waterMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(100px);
+    }
+}
+
+/* Sand */
+
+.sand {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 70px;
+
+    background: #d8bf78;
+}
+
+/* PLANTS */
+
+.plant {
+    position: absolute;
+    bottom: 60px;
+
+    width: 12px;
+    height: 150px;
+
+    background: #218b4b;
+
+    border-radius: 50%;
+
+    transform-origin: bottom;
+
+    animation: plantMove 2s infinite alternate ease-in-out;
+}
+
+.plant::before,
+.plant::after {
+    content: "";
+
+    position: absolute;
+
+    width: 45px;
+    height: 100px;
+
+    bottom: 30px;
+
+    background: #2aaa60;
+
+    border-radius: 80% 0 80% 0;
+}
+
+.plant::before {
+    right: 0;
+    transform: rotate(35deg);
+}
+
+.plant::after {
+    left: 0;
+    transform: rotate(-35deg);
+}
+
+@keyframes plantMove {
+    from {
+        transform: rotate(-3deg);
+    }
+
+    to {
+        transform: rotate(5deg);
+    }
+}
+
+/* ROCKS */
+
+.rock {
+    position: absolute;
+    bottom: 55px;
+
+    width: 65px;
+    height: 30px;
+
+    background: #59686d;
+
+    border-radius: 60% 50% 40% 40%;
+}
+
+/* BUBBLES */
+
+.bubble {
+    position: absolute;
+
+    bottom: -20px;
+
+    border: 2px solid rgba(255,255,255,.6);
+
+    border-radius: 50%;
+
+    animation: bubbleRise 5s linear infinite;
+}
+
+@keyframes bubbleRise {
+    from {
+        transform: translateY(0);
+        opacity: .8;
+    }
+
+    to {
+        transform: translateY(-600px);
+        opacity: 0;
+    }
+}
+
+/* FISH */
+
+#fish {
+    position: absolute;
+
+    width: 120px;
+    height: 70px;
+
+    transition:
+        left 1.5s ease,
+        top 1.5s ease,
+        transform .5s ease;
+}
+
+/* Body */
+
+.fish-body {
+    position: absolute;
+
+    left: 10px;
+    top: 12px;
+
+    width: 78px;
+    height: 48px;
+
+    background: orange;
+
+    border-radius: 55% 45% 50% 50%;
+
+    box-shadow:
+        inset -8px -5px rgba(0,0,0,.15);
+}
+
+/* Tail */
+
+.fish-tail {
+    position: absolute;
+
+    left: 78px;
+    top: 14px;
+
+    width: 0;
+    height: 0;
+
+    border-top: 22px solid transparent;
+    border-bottom: 22px solid transparent;
+
+    border-left: 40px solid darkorange;
+}
+
+/* Eye */
+
+.eye {
+    position: absolute;
+
+    left: 70px;
+    top: 22px;
+
+    width: 9px;
+    height: 9px;
+
+    background: black;
+
+    border-radius: 50%;
+
+    z-index: 3;
+}
+
+/* Fin */
+
+.fin {
+    position: absolute;
+
+    left: 35px;
+    top: 2px;
+
+    width: 32px;
+    height: 18px;
+
+    background: #ffd16a;
+
+    border-radius: 70% 10%;
+
+    transform: rotate(-20deg);
+}
+
+/* CONTROLS */
+
+.controls {
+    margin: 15px;
+}
+
+button {
+    padding: 12px 18px;
+
+    margin: 5px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: white;
+
+    color: #073b52;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    font-size: 15px;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+/* PANELS */
+
+.panels {
+    width: 90%;
+    max-width: 1000px;
+
+    margin: 15px auto;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 15px;
+}
+
+.panel {
+    background: #102d3b;
+
+    padding: 18px;
+
+    border-radius: 15px;
+
+    text-align: left;
+}
+
+/* STATS */
+
+.stat {
+    margin: 12px 0;
+}
+
+.bar {
+    height: 12px;
+
+    background: #244552;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+
+    width: 50%;
+
+    background: #55d66a;
+
+    transition: width .5s;
+}
+
+/* CHAT */
+
+#chat {
+    height: 220px;
+
+    overflow-y: auto;
+
+    background: #071923;
+
+    padding: 10px;
+
+    border-radius: 10px;
+}
+
+.message {
+    padding: 9px;
+
+    margin: 7px;
+
+    border-radius: 10px;
+
+    max-width: 85%;
+}
+
+.goldie {
+    background: #5a431d;
+}
+
+.user {
+    background: #1b5872;
+
+    margin-left: auto;
+}
+
+.chat-input {
+    display: flex;
+
+    gap: 7px;
+
+    margin-top: 8px;
+}
+
+.chat-input input {
+    flex: 1;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 8px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px) {
+
+    .panels {
+        grid-template-columns: 1fr;
+    }
+
+    #aquarium {
+        height: 450px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<h1>🐠 Goldie — Aquarium</h1>
+
+
+<!-- AQUARIUM -->
+
+<div id="aquarium">
+
+    <div class="water-light"></div>
+
+    <div id="plants"></div>
+
+    <div id="rocks"></div>
+
+    <div id="bubbles"></div>
+
+
+    <!-- FISH -->
+
+    <div id="fish">
+
+        <div class="fin"></div>
+
+        <div class="fish-body"></div>
+
+        <div class="fish-tail"></div>
+
+        <div class="eye"></div>
+
+    </div>
+
+
+    <div class="sand"></div>
+
+</div>
+
+
+<!-- BUTTONS -->
+
+<div class="controls">
+
+    <button onclick="feedFish()">
+        🍽️ Feed Goldie
+    </button>
+
+    <button onclick="moveFish()">
+        🏊 Make Goldie Swim
+    </button>
+
+    <button onclick="startTalking()">
+        🎤 Talk to Goldie
+    </button>
+
+</div>
+
+
+<!-- PANELS -->
+
+<div class="panels">
+
+
+    <!-- STATS -->
+
+    <div class="panel">
+
+        <h2>🐠 Goldie Stats</h2>
+
+        <div class="stat">
+
+            Happiness:
+            <b id="happinessText">70</b>
+
+            <div class="bar">
+                <div
+                    id="happinessBar"
+                    class="fill">
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            Hunger:
+            <b id="hungerText">40</b>
+
+            <div class="bar">
+                <div
+                    id="hungerBar"
+                    class="fill">
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            Growth:
+            <b id="growthText">10</b>
+
+            <div class="bar">
+                <div
+                    id="growthBar"
+                    class="fill">
+                </div>
+            </div>
+
+        </div>
+
+
+        <p>
+            Mood:
+            <b id="mood">Happy</b>
+        </p>
+
+
+        <p>
+            Color:
+            <b id="color">Orange</b>
+        </p>
+
+    </div>
+
+
+    <!-- CHAT -->
+
+    <div class="panel">
+
+        <h2>💬 Talk to Goldie</h2>
+
+
+        <div id="chat">
+
+            <div class="message goldie">
+                Goldie: Blub blub! Hello! 🐠
+            </div>
+
+        </div>
+
+
+        <div class="chat-input">
+
+            <input
+                id="userInput"
+                placeholder="Ask Goldie something..."
+                onkeydown="if(event.key==='Enter') sendMessage()">
+
+            <button onclick="sendMessage()">
+                Send
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================
+   GOLDIE DATA
+===================================== */
+
+let goldie = {
+
+    happiness: 70,
+
+    hunger: 40,
+
+    growth: 10,
+
+    mood: "Happy",
+
+    color: "Orange"
+
+};
+
+
+/* =====================================
+   CREATE PLANTS
+===================================== */
+
+const aquarium =
+    document.getElementById("aquarium");
+
+const plants =
+    document.getElementById("plants");
+
+
+for(let i = 0; i < 18; i++) {
+
+    let plant =
+        document.createElement("div");
+
+    plant.className = "plant";
+
+    plant.style.left =
+        (Math.random() * 95) + "%";
+
+    plant.style.height =
+        (80 + Math.random() * 140) + "px";
+
+    plant.style.animationDelay =
+        (-Math.random() * 2) + "s";
+
+    plants.appendChild(plant);
+}
+
+
+/* =====================================
+   CREATE ROCKS
+===================================== */
+
+const rocks =
+    document.getElementById("rocks");
+
+
+for(let i = 0; i < 9; i++) {
+
+    let rock =
+        document.createElement("div");
+
+    rock.className = "rock";
+
+    rock.style.left =
+        (Math.random() * 92) + "%";
+
+    rock.style.width =
+        (35 + Math.random() * 70) + "px";
+
+    rocks.appendChild(rock);
+}
+
+
+/* =====================================
+   CREATE BUBBLES
+===================================== */
+
+const bubbles =
+    document.getElementById("bubbles");
+
+
+for(let i = 0; i < 30; i++) {
+
+    let bubble =
+        document.createElement("div");
+
+    bubble.className = "bubble";
+
+    bubble.style.left =
+        (Math.random() * 98) + "%";
+
+    let size =
+        5 + Math.random() * 12;
+
+    bubble.style.width =
+        size + "px";
+
+    bubble.style.height =
+        size + "px";
+
+    bubble.style.animationDelay =
+        (-Math.random() * 5) + "s";
+
+    bubbles.appendChild(bubble);
+}
+
+
+/* =====================================
+   FISH MOVEMENT
+===================================== */
+
+const fish =
+    document.getElementById("fish");
+
+
+function moveFish() {
+
+    let x =
+        Math.random() *
+        (aquarium.clientWidth - 140);
+
+    let y =
+        50 +
+        Math.random() *
+        (aquarium.clientHeight - 170);
+
+    fish.style.left = x + "px";
+
+    fish.style.top = y + "px";
+
+}
+
+
+setInterval(moveFish, 2500);
+
+moveFish();
+
+
+/* =====================================
+   UPDATE STATS
+===================================== */
+
+function updateStats() {
+
+    document.getElementById(
+        "happinessText"
+    ).textContent =
+        Math.round(goldie.happiness);
+
+
+    document.getElementById(
+        "hungerText"
+    ).textContent =
+        Math.round(goldie.hunger);
+
+
+    document.getElementById(
+        "growthText"
+    ).textContent =
+        Math.round(goldie.growth);
+
+
+    document.getElementById(
+        "happinessBar"
+    ).style.width =
+        goldie.happiness + "%";
+
+
+    document.getElementById(
+        "hungerBar"
+    ).style.width =
+        goldie.hunger + "%";
+
+
+    document.getElementById(
+        "growthBar"
+    ).style.width =
+        goldie.growth + "%";
+
+
+    document.getElementById(
+        "mood"
+    ).textContent =
+        goldie.mood;
+
+
+    document.getElementById(
+        "color"
+    ).textContent =
+        goldie.color;
+
+
+    updateFishColor();
+
+}
+
+
+/* =====================================
+   FEED FISH
+===================================== */
+
+function feedFish() {
+
+    goldie.hunger -= 25;
+
+    goldie.happiness += 10;
+
+    goldie.growth += 8;
+
+
+    if(goldie.hunger < 0)
+        goldie.hunger = 0;
+
+
+    if(goldie.happiness > 100)
+        goldie.happiness = 100;
+
+
+    if(goldie.growth > 100)
+        goldie.growth = 100;
+
+
+    goldie.mood = "Excited";
+
+
+    updateColorStage();
+
+    updateStats();
+
+
+    addMessage(
+        "Goldie",
+        "Yum yum! 🍽️ Thank you! I feel bigger!"
+    );
+
+
+    setTimeout(() => {
+
+        goldie.mood = "Happy";
+
+        updateStats();
+
+    }, 1800);
+
+}
+
+
+/* =====================================
+   COLOR CHANGES
+===================================== */
+
+function updateColorStage() {
+
+    if(goldie.growth >= 80) {
+
+        goldie.color = "Rainbow";
+
+    }
+
+    else if(goldie.growth >= 60) {
+
+        goldie.color = "Pink";
+
+    }
+
+    else if(goldie.growth >= 40) {
+
+        goldie.color = "Gold";
+
+    }
+
+    else if(goldie.growth >= 20) {
+
+        goldie.color = "Red";
+
+    }
+
+    else {
+
+        goldie.color = "Orange";
+
+    }
+
+}
+
+
+/* =====================================
+   CHANGE FISH COLOR
+===================================== */
+
+function updateFishColor() {
+
+    const body =
+        document.querySelector(".fish-body");
+
+    const tail =
+        document.querySelector(".fish-tail");
+
+
+    const colors = {
+
+        Orange: "orange",
+
+        Red: "#ef654b",
+
+        Gold: "#ffd84d",
+
+        Pink: "#f58ca8"
+
+    };
+
+
+    if(goldie.color === "Rainbow") {
+
+        body.style.background =
+            "linear-gradient(90deg,red,orange,yellow,green,blue,purple)";
+
+        tail.style.borderLeftColor =
+            "#806cff";
+
+    }
+
+    else {
+
+        body.style.background =
+            colors[goldie.color];
+
+        tail.style.borderLeftColor =
+            colors[goldie.color];
+
+    }
+
+
+    /* Fish grows */
+
+    let scale =
+        0.8 +
+        goldie.growth / 100 * 0.8;
+
+    fish.style.transform =
+        "scale(" + scale + ")";
+
+}
+
+
+/* =====================================
+   CHAT
+===================================== */
+
+function addMessage(who, text) {
+
+    const chat =
+        document.getElementById("chat");
+
+
+    const message =
+        document.createElement("div");
+
+
+    message.className =
+        "message " +
+        (who === "Goldie"
+            ? "goldie"
+            : "user");
+
+
+    message.textContent =
+        who + ": " + text;
+
+
+    chat.appendChild(message);
+
+
+    chat.scrollTop =
+        chat.scrollHeight;
+
+}
+
+
+/* =====================================
+   SIMPLE AI-LIKE RESPONSES
+===================================== */
+
+function sendMessage() {
+
+    const input =
+        document.getElementById("userInput");
+
+
+    const text =
+        input.value.trim();
+
+
+    if(!text)
+        return;
+
+
+    input.value = "";
+
+
+    addMessage(
+        "You",
+        text
+    );
+
+
+    goldie.mood = "Thinking";
+
+    updateStats();
+
+
+    let lower =
+        text.toLowerCase();
+
+
+    let answer = "";
+
+
+    if(
+        lower.includes("hello") ||
+        lower.includes("hi")
+    ) {
+
+        answer =
+            "Blub blub! Hello! Nice to see you! 🐠";
+
+        goldie.mood = "Happy";
+
+    }
+
+    else if(
+        lower.includes("food") ||
+        lower.includes("hungry")
+    ) {
+
+        answer =
+            "Food sounds amazing! Please feed me! 🍽️";
+
+        goldie.mood = "Excited";
+
+    }
+
+    else if(
+        lower.includes("how are you")
+    ) {
+
+        answer =
+            "I'm feeling " +
+            goldie.mood.toLowerCase() +
+            "! My aquarium is beautiful.";
+
+    }
+
+    else if(
+        lower.includes("favorite") ||
+        lower.includes("plant")
+    ) {
+
+        answer =
+            "I think the big green plants are my favorite. They make my aquarium feel like a jungle! 🌿";
+
+        goldie.mood = "Happy";
+
+    }
+
+    else if(
+        lower.includes("school")
+    ) {
+
+        answer =
+            "I think this aquarium makes a pretty awesome school project! 🎓🐠";
+
+        goldie.mood = "Excited";
+
+    }
+
+    else if(
+        lower.includes("opinion") ||
+        lower.includes("think")
+    ) {
+
+        answer =
+            "My totally fictional goldfish opinion is that swimming around is better than doing homework! 😄";
+
+        goldie.mood = "Happy";
+
+    }
+
+    else {
+
+        const replies = [
+
+            "Hmm... that is an interesting question! 🤔",
+
+            "Blub blub! I need to think about that.",
+
+            "I think that sounds interesting! 🐠",
+
+            "My goldfish brain says yes! 😄",
+
+            "Interesting! Tell me more!"
+
+        ];
+
+
+        answer =
+            replies[
+                Math.floor(
+                    Math.random() *
+                    replies.length
+                )
+            ];
+
+
+        goldie.mood = "Curious";
+
+    }
+
+
+    setTimeout(() => {
+
+        addMessage(
+            "Goldie",
+            answer
+        );
+
+
+        updateStats();
+
+
+        speak(answer);
+
+    }, 500);
+
+}
+
+
+/* =====================================
+   MICROPHONE
+===================================== */
+
+function startTalking() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if(!SpeechRecognition) {
+
+        addMessage(
+            "Goldie",
+            "Sorry! Your browser does not support microphone speech recognition."
+        );
+
+        return;
+
+    }
+
+
+    const recognition =
+        new SpeechRecognition();
+
+
+    recognition.lang =
+        "en-US";
+
+
+    recognition.interimResults =
+        false;
+
+
+    recognition.onstart =
+        function() {
+
+            goldie.mood =
+                "Listening";
+
+            updateStats();
+
+        };
+
+
+    recognition.onresult =
+        function(event) {
+
+            const spokenText =
+                event.results[0][0].transcript;
+
+
+            document.getElementById(
+                "userInput"
+            ).value =
+                spokenText;
+
+
+            sendMessage();
+
+        };
+
+
+    recognition.onerror =
+        function() {
+
+            goldie.mood =
+                "Confused";
+
+            updateStats();
+
+        };
+
+
+    recognition.onend =
+        function() {
+
+            if(
+                goldie.mood ===
+                "Listening"
+            ) {
+
+                goldie.mood =
+                    "Happy";
+
+                updateStats();
+
+            }
+
+        };
+
+
+    recognition.start();
+
+}
+
+
+/* =====================================
+   GOLDIE SPEAKS
+===================================== */
+
+function speak(text) {
+    if (!("speechSynthesis" in window)) return;
+
+    speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    // Gentle, soft speaking style
+    utterance.rate = 0.78;
+    utterance.pitch = 1.35;
+    utterance.volume = 0.65;
+
+    // Try to select a softer voice available on the device
+    const voices = speechSynthesis.getVoices();
+
+    const preferredVoice = voices.find(voice =>
+        /female|samantha|aria|jenny|zira|susan|karen|google us english/i
+        .test(voice.name)
+    );
+
+    if (preferredVoice) {
+        utterance.voice = preferredVoice;
+    }
+
+    speechSynthesis.speak(utterance);
+}
+
+
+/* INITIALIZE */
+
+updateStats();
+
+</script>
+
+</body>
 </html>
+```
